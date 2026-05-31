@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles for CRUCIX Global Surveillance Command */
+
+:root {
+  --color-cyan: #00f0ff;
+  --color-green: #39ff14;
+  --color-amber: #ffaa00;
+  --color-red: #ff0055;
+  --color-dark: #030611;
+  --font-display: 'Orbitron', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-sans: 'Rajdhani', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-dark);
+  font-family: var(--font-sans);
+  color: #e2e8f0;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(10, 20, 50, 0.4) 0%, rgba(3, 6, 17, 1) 90%),
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 30px 30px, 30px 30px;
+}
+
+/* CRT Screen Curvature Simulation */
+.crt-screen {
+  background: radial-gradient(circle, rgba(18, 16, 16, 0) 60%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0.85;
+}
+
+/* Scanlines Animation */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.crt-screen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+}
+
+/* Cybernetic Corner Borders */
+.cyber-panel {
+  position: relative;
+  background: rgba(4, 8, 20, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+}
+
+.cyber-panel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--color-cyan);
+  border-left: 2px solid var(--color-cyan);
+  border-top-left-radius: 4px;
+  pointer-events: none;
+}
+
+.cyber-panel::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid var(--color-cyan);
+  border-right: 2px solid var(--color-cyan);
+  border-bottom-right-radius: 4px;
+  pointer-events: none;
+}
+
+/* Red/Green Alert variants */
+.cyber-panel-red {
+  border-color: rgba(255, 0, 85, 0.2) !important;
+}
+.cyber-panel-red::before, .cyber-panel-red::after {
+  border-color: var(--color-red) !important;
+}
+
+.cyber-panel-green {
+  border-color: rgba(57, 255, 20, 0.2) !important;
+}
+.cyber-panel-green::before, .cyber-panel-green::after {
+  border-color: var(--color-green) !important;
+}
+
+.cyber-panel-amber {
+  border-color: rgba(255, 170, 0, 0.2) !important;
+}
+.cyber-panel-amber::before, .cyber-panel-amber::after {
+  border-color: var(--color-amber) !important;
+}
+
+/* Radar Pulse Animations */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.radar-pulse-ring {
+  animation: radar-pulse 3s cubic-bezier(0.21, 0.82, 0.38, 0.89) infinite;
+}
+
+/* Surveillance Grid background */
+.surveillance-grid {
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+/* Decryption Text Glitch Effect */
+@keyframes text-glitch {
+  0% { opacity: 1; }
+  45% { opacity: 1; }
+  50% { opacity: 0.4; }
+  55% { opacity: 1; }
+  85% { opacity: 1; }
+  90% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.glitch-text {
+  animation: text-glitch 5s infinite;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 6, 17, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.3);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cyan);
+  box-shadow: 0 0 8px var(--color-cyan);
+}
+
+/* Digital Noise / CCTV Static */
+@keyframes static-noise {
+  0% { transform: translate(0,0) }
+  10% { transform: translate(-1%,-1%) }
+  20% { transform: translate(-2%,1%) }
+  30% { transform: translate(1%,-2%) }
+  40% { transform: translate(-1%,3%) }
+  50% { transform: translate(-2%,1%) }
+  60% { transform: translate(1%,3%) }
+  70% { transform: translate(3%,-2%) }
+  80% { transform: translate(-1%,1%) }
+  90% { transform: translate(2%,-3%) }
+  100% { transform: translate(1%,-2%) }
+}
+
+.cctv-static {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: static-noise 0.2s steps(4) infinite;
+  opacity: 0.12;
+}
+
+/* Scan line sweep */
+@keyframes scanner-sweep {
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.scanner-bar {
+  animation: scanner-sweep 4s linear infinite;
+}
+
+/* Tactical glowing fonts */
+.text-glow-cyan {
+  text-shadow: 0 0 5px rgba(0, 240, 255, 0.6);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.6);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 5px rgba(255, 0, 85, 0.6);
+}
+
+.text-glow-amber {
+  text-shadow: 0 0 5px rgba(255, 170, 0, 0.6);
+}
+
+/* Satellite Radar Circle Animation */
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep-hand {
+  transform-origin: 50% 50%;
+  animation: radar-sweep 6s linear infinite;
+}
+
+/* Hexagon background pattern */
+.hex-pattern {
+  background-color: #030611;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%2300f0ff' fill-opacity='0.015' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5-13-7.5v-15l13-7.5zM0 0h28v49H0V0zm13.99 1.15L.5 8.94v15.6l13.49 7.79 13.49-7.79v-15.6L13.99 1.15zm0 46.7l13.49-7.79v-15.6L13.99 32.48l-13.49 4.18v15.6l13.49 7.79z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Marquee marquee scrolling */
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
+}
