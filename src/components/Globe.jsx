@@ -190,6 +190,15 @@ export default function Globe({ activeNode, onSelectNode, defconLevel }) {
       const currentActiveNode = activeNodeRef.current;
       const { x: meridianX, y: equatorY } = mapCoords(0, 0, w, h);
 
+      const SECTOR_CONTINENT_MAP = {
+        nyc: ['NORTH AMERICA', 'GREENLAND'],
+        amazon: ['SOUTH AMERICA'],
+        kyiv: ['EURASIA'],
+        cairo: ['AFRICA'],
+        tokyo: ['EURASIA', 'AUSTRALIA'],
+        baghdad: ['EURASIA', 'AFRICA']
+      };
+
       // Save untransformed screen-space state
       ctx.save();
 
@@ -220,6 +229,32 @@ export default function Globe({ activeNode, onSelectNode, defconLevel }) {
 
       // --- 2. Draw 2D Vector Geographical Landmasses (Holographic Continent Polygons) ---
       CONTINENTS.forEach(cont => {
+        let isHighlighted = false;
+        let isHoveredHighlight = false;
+        let highlightColor = 'rgba(0, 240, 255, 0.16)';
+        let fillColor = 'rgba(0, 240, 255, 0.02)';
+        let lineWidth = 1 / zoom;
+
+        const activeSecId = currentActiveNode ? currentActiveNode.id : null;
+        const hoveredSecId = hoveredSector ? hoveredSector.id : null;
+
+        // Check active node selection
+        if (activeSecId && SECTOR_CONTINENT_MAP[activeSecId]?.includes(cont.name)) {
+          isHighlighted = true;
+          const alertColor = defconLevelRef.current === 1 ? '#ff0055' : (currentActiveNode.color || '#ff0055');
+          highlightColor = alertColor;
+          fillColor = `${alertColor}18`; // Translucent glow fill
+          lineWidth = 2.2 / zoom;
+        } 
+        // Check hover state (only if not already active highlight)
+        else if (hoveredSecId && SECTOR_CONTINENT_MAP[hoveredSecId]?.includes(cont.name)) {
+          isHoveredHighlight = true;
+          const sec = SECTORS.find(s => s.id === hoveredSecId);
+          highlightColor = sec ? sec.strokeColor : 'rgba(0, 240, 255, 0.6)';
+          fillColor = sec ? sec.color : 'rgba(0, 240, 255, 0.08)';
+          lineWidth = 1.6 / zoom;
+        }
+
         ctx.beginPath();
         cont.points.forEach((p, idx) => {
           const { x, y } = mapCoords(p.lat, p.lon, w, h);
@@ -229,38 +264,34 @@ export default function Globe({ activeNode, onSelectNode, defconLevel }) {
         ctx.closePath();
 
         // High-tech blueprint translucent fill
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.02)';
+        ctx.fillStyle = fillColor;
         ctx.fill();
 
         // Neon border stroke
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.16)';
-        ctx.lineWidth = 1 / zoom;
+        ctx.strokeStyle = highlightColor;
+        ctx.lineWidth = lineWidth;
         ctx.stroke();
+
+        // Special double glow pulse outline for active selection
+        if (isHighlighted && (Math.floor(pulseTime * 2.5) % 2 === 0)) {
+          ctx.strokeStyle = `${highlightColor}88`;
+          ctx.lineWidth = lineWidth + 2 / zoom;
+          ctx.stroke();
+        }
       });
 
-      // --- 3. Draw Tactical Command Sectors Grid Box (Highlights on hover/click) ---
+      // --- 3. Draw Tactical Command Sectors ID Tags (Without rectangular boundary boxes) ---
       SECTORS.forEach(sec => {
         const { x: x1, y: y1 } = mapCoords(sec.latRange[1], sec.lonRange[0], w, h);
-        const { x: x2, y: y2 } = mapCoords(sec.latRange[0], sec.lonRange[1], w, h);
 
         const isHovered = hoveredSector && hoveredSector.id === sec.id;
         const isCurrentActive = activeNodeRef.current && activeNodeRef.current.id === sec.id;
 
-        // Draw sector boundary box
-        ctx.strokeStyle = isCurrentActive ? 'rgba(255, 0, 85, 0.3)' : isHovered ? sec.strokeColor : 'rgba(0, 240, 255, 0.04)';
-        ctx.fillStyle = isCurrentActive ? 'rgba(255, 0, 85, 0.03)' : isHovered ? sec.color : 'rgba(0, 0, 0, 0)';
-        ctx.lineWidth = isCurrentActive ? 1.5 / zoom : 1 / zoom;
-        
-        ctx.beginPath();
-        ctx.rect(x1, y1, x2 - x1, y2 - y1);
-        ctx.fill();
-        ctx.stroke();
-
-        // Sector ID tags
-        ctx.fillStyle = isCurrentActive ? '#ff0055' : isHovered ? 'rgba(0, 240, 255, 0.8)' : 'rgba(0, 240, 255, 0.18)';
-        ctx.font = `bold ${8 / zoom}px "Share Tech Mono"`;
+        // Sector ID tags text
+        ctx.fillStyle = isCurrentActive ? '#ff0055' : isHovered ? 'rgba(0, 240, 255, 0.85)' : 'rgba(0, 240, 255, 0.22)';
+        ctx.font = `bold ${7.5 / zoom}px "Share Tech Mono"`;
         ctx.textAlign = 'left';
-        ctx.fillText(sec.name, x1 + 6 / zoom, y1 + 12 / zoom);
+        ctx.fillText(`[${sec.name}]`, x1 + 6 / zoom, y1 + 12 / zoom);
       });
 
       // --- 4. Draw Undersea Fiber Cable Streams (Tracker 1) ---
