@@ -187,6 +187,9 @@ export default function Globe({ activeNode, onSelectNode, defconLevel }) {
 
       ctx.clearRect(0, 0, w, h);
 
+      const currentActiveNode = activeNodeRef.current;
+      const { x: meridianX, y: equatorY } = mapCoords(0, 0, w, h);
+
       // Save untransformed screen-space state
       ctx.save();
 

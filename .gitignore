@@ -111,3 +111,28 @@ dist/
 dist-ssr/
 *.local
 .vite/
+
+# Gemini & Agent files
+.gemini/
+.gemini*
+antigravity/
+.system_generated/
+scratch/
+
+# Images, Media & Assets (img files)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+*.mp3
+*.wav
+*.mp4
+
+# Tokens, keys, and secrets
+*token*
+*secret*
+*credential*
+*key*
+.env*
